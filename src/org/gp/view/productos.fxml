@@ -13,7 +13,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.gp.controller.ProductoController"
+            fx:controller="org.gp.controller.ProductosController"
             prefWidth="900.0"
             prefHeight="600.0">
 

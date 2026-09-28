@@ -1,4 +1,4 @@
-package org.gp.dao;
+package org.gp.dao.impl;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.gp.dao.ProductoDAO;
 import org.gp.model.Producto;
 import org.gp.util.Conexion;
 
@@ -50,6 +51,7 @@ public class ProductoDAOImpl implements ProductoDAO {
     }
 
 
+    @Override
     public Producto buscarPorId(int idProducto) throws SQLException {
 
         String sql = "{CALL buscar_producto_por_id(?)}";
@@ -98,6 +100,7 @@ public class ProductoDAOImpl implements ProductoDAO {
         }
     }
 
+
     @Override
     public boolean actualizar(Producto producto) throws SQLException {
 
@@ -120,6 +123,7 @@ public class ProductoDAOImpl implements ProductoDAO {
             return filasAfectadas > 0;
         }
     }
+
 
     @Override
     public boolean eliminar(int idProducto) throws SQLException {

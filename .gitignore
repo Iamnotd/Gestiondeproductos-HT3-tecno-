@@ -2,4 +2,4 @@
 config.properties
 .LCK*
 *~
-/dist/
+/nbproject/private/
