@@ -1,13 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package org.gp.system;
 
-/**
- *
- * @author roxyl
- */
-public class Main {
-    
+import javafx.application.Application;
+import javafx.stage.Stage;
+
+public class Main extends Application {
+
+    @Override
+    public void start(Stage stage) {
+        stage.setTitle("Gestión de Productos");
+        stage.setWidth(800);
+        stage.setHeight(600);
+        stage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
