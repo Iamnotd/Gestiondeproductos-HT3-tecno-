@@ -1,29 +1,28 @@
 package org.gp.util;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class Conexion {
 
     private static Conexion instancia;
     private Connection conexion;
 
-    private static final String URL =
-            "jdbc:mysql://localhost:3306/db_gestion_productos"
-            + "?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+    private String url;
+    private String usuario;
+    private String contrasena;
 
-    private static final String USUARIO = "root";
-
-    // CAMBIA AQUÍ TU CONTRASEÑA DE MYSQL
-    private static final String CONTRASENA = "CAMBIA_AQUI_TU_CONTRASEÑA";
-
-    // Constructor privado: evita crear objetos Conexion con "new".
+    // Constructor privado para aplicar el patrón Singleton
     private Conexion() {
+        cargarConfiguracion();
         conectar();
     }
 
-    // Devuelve la única instancia de Conexion.
+    // Devuelve la única instancia de Conexion
     public static Conexion getInstancia() {
         if (instancia == null) {
             instancia = new Conexion();
@@ -32,33 +31,62 @@ public class Conexion {
         return instancia;
     }
 
-    // Realiza la conexión utilizando DriverManager.
+    // Lee los datos de conexión desde config.properties
+    private void cargarConfiguracion() {
+
+        Properties propiedades = new Properties();
+
+        try (FileInputStream archivo =
+                new FileInputStream("config.properties")) {
+
+            propiedades.load(archivo);
+
+            url = propiedades.getProperty("db.url");
+            usuario = propiedades.getProperty("db.usuario");
+            contrasena = propiedades.getProperty("db.contrasena");
+
+        } catch (IOException e) {
+            System.err.println("Error al cargar config.properties:");
+            System.err.println(e.getMessage());
+        }
+    }
+
+    // Realiza la conexión a MySQL mediante DriverManager
     private void conectar() {
+
         try {
+
             conexion = DriverManager.getConnection(
-                    URL,
-                    USUARIO,
-                    CONTRASENA
+                    url,
+                    usuario,
+                    contrasena
             );
 
-            System.out.println("Conexión a MySQL realizada correctamente.");
+            System.out.println(
+                    "Conexión a MySQL realizada correctamente."
+            );
 
         } catch (SQLException e) {
+
             System.err.println("Error al conectar con MySQL:");
             System.err.println(e.getMessage());
         }
     }
 
-    // Entrega la conexión para utilizarla desde los DAO.
+    // Devuelve la conexión para utilizarla desde los DAO
     public Connection getConexion() {
 
         try {
+
             if (conexion == null || conexion.isClosed()) {
                 conectar();
             }
+
         } catch (SQLException e) {
+
             System.err.println(
-                    "Error al verificar la conexión: " + e.getMessage()
+                    "Error al verificar la conexión: "
+                    + e.getMessage()
             );
         }
 
